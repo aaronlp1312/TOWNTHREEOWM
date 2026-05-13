@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Tacoma Narrows Weather</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/weather-icons/2.0.12/css/weather-icons.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;400;500;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+</head>
+
+<body>
+<div class="loading-overlay">
+<div class="loading-spinner"></div>
+</div>
+
+<section class="viewport">
+
+<section class="Narrows-Stage">
+<div class="canvas-outer" id="canvas-stack">
+<canvas id="bay-sky-canvas"     class="canvas"></canvas>
+<canvas id="stars-canvas"       class="canvas"></canvas>
+<canvas id="birds-canvas"       class="canvas"></canvas>
+<canvas id="cloud-high-canvas"  class="canvas"></canvas>
+<canvas id="cloud-mid-canvas"   class="canvas"></canvas>
+<canvas id="cloud-storm-canvas" class="canvas"></canvas>
+<canvas id="fog-canvas"         class="canvas"></canvas>
+<canvas id="mist-canvas"        class="canvas"></canvas>
+<canvas id="rain-canvas"        class="canvas"></canvas>
+<canvas id="snow-canvas"        class="canvas"></canvas>
+<canvas id="hail-canvas"        class="canvas"></canvas>
+<canvas id="lightning-canvas"   class="canvas"></canvas>
+</div>
+
+<div id="celestial-layer">
+<div class="sun" id="sun">
+<div class="sun-core"></div>
+<div class="rays">
+<div class="ray-one"></div>
+<div class="ray-two"></div>
+<div class="ray-three"></div>
+<div class="ray-four"></div>
+<div class="ray-five"></div>
+<div class="ray-six"></div>
+<div class="ray-seven"></div>
+<div class="ray-eight"></div>
+<div class="ray-nine"></div>
+<div class="ray-ten"></div>
+</div>
+</div>
+<div class="moon" id="moon">
+<div class="moon-texture"></div>
+<div class="light-circle"></div>
+<div class="shadow-circle"></div>
+</div>
+</div>
+
+<div class="scene">
+<div class="mountain"></div>
+<div class="horizon"></div>
+<div class="farground"></div>
+<canvas id="bridge-canvas" class="canvas"></canvas>
+<div class="boat"></div>
+<div class="foreground"></div>
+<div class="tree-container" id="tree-container">
+<div class="tree" id="tree1"></div>
+<div class="tree" id="tree2"></div>
+<div class="tree" id="tree3"></div>
+</div>
+</div>
+
+<header id="header"class= "header">
+<div class="header-details">
+<div>
+<div class="temp">
+<span id="temp">--</span>°<span id="format">F</span>
+</div>
+<p id="location-name">GrittyCity</p>
+</div>
+<div class="right">
+<div class="clock" id="clock">
+<strong class="clock__word clock__word--bold"></strong>
+<span class="clock__word"></span>
+<strong class="clock__word clock__word--bold"></strong>
+<strong class="clock__word clock__word--bold"></strong>
+</div>
+<div id="date">--</div>
+<div id="description">--</div>
+</div>
+</div>
+</header>
+
+<div class="search-container" id="searchContainer">
+<div class="search-input-wrapper">
+<input type="text" id="zipInput" class="search-box" placeholder="Search location...">
+<button class="search-btn" id="searchBtn">
+<span class="material-symbols-outlined">search</span>
+</button>
+</div>
+</div>
+</section>
+
+<main>
+
+<article id="welcome" class="stack">
+<h2><span id="welcome-message"></span></h2>
+<div id="user-name"></div>
+<span id="theme-description"></span>
+<p id="theme-quote"></p>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Max Temp</span></div>
+<div class="tile-img"><i class="wi wi-thermometer"></i></div>
+<div class="tile-data"><p id="temp-high">--</p></div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Low Temp</span></div>
+<div class="tile-img"><i class="wi wi-thermometer-exterior"></i></div>
+<div class="tile-data"><p id="temp-low">--</p></div>
+</article>
+
+<article class="feels-like">
+<h2>Feels Like</h2>
+<div class="art-inner">
+<div class="data-row">
+<div class="label">The temp outside feels about</div>
+<div class="value" id="feels-like">--</div>
+</div>
+</div>
+</article>
+
+<article id="alerts-container">
+<h2>Local Alerts</h2>
+<div id="local-alerts"></div>
+<div id="national-alerts"><p id="severe-weather"></p></div>
+<div id="no-alerts" class="alert-body">
+<figure>
+<blockquote><p><strong>Diamond in the back, sun roof top, digging in the scene with a gangsta lean.</strong></p></blockquote>
+<figcaption><cite>beep beep</cite></figcaption>
+</figure>
+</div>
+</article>
+
+<article id="celestial-helix">
+<h2>7-Day Celestial Path</h2>
+<div class="helix-scroll-track" id="helixScrollTrack">
+<div class="helix-canvas-container is-loading" id="helixContainer" style="width: 100vw;">
+<svg id="helixSVG" width="100%" height="200" viewBox="0 0 500 200">
+<line x1="0" y1="100" x2="500" y2="100" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+<path d="M 0 100 Q 125 0, 250 100 T 500 100" fill="none" stroke="rgba(255,255,255,0.15)" stroke-width="2" stroke-dasharray="4,4"/>
+</svg>
+<div class="solar" id="solar" style="opacity: 0;"></div>
+<div class="lunar" id="luna" style="opacity: 0;"></div>
+<div id="helix-labels" style="position: absolute; bottom: 10px; width: 100%; text-align: center; font-size: 0.7rem; color: var(--text-muted); font-variant-caps: all-small-caps;">
+Calibrating Celestial Orbits...
+</div>
+</div>
+</div>
+</article>
+
+<article class="celestial-data">
+<h2>Solar Data</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label"><i class="fa-solid fa-leaf"></i> Season</div><div class="value" id="season">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-solid fa-sun"></i> Sunrise</div><div class="value" id="sunrise">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-regular fa-sun"></i> Sunset</div><div class="value" id="sunset">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-solid fa-stopwatch"></i> Day Length</div><div class="value" id="dayLength">--</div></div>
+</div>
+</article>
+
+<article class="celestial-data">
+<h2>Lunar Data</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label"><i class="fa-solid fa-moon"></i> Moon Phase</div><div class="value" id="moonPhaseName">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-solid fa-arrow-up"></i> Moonrise</div><div class="value" id="moonrise">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-solid fa-arrow-down"></i> Moonset</div><div class="value" id="moonset">--</div></div>
+<div class="data-row"><div class="label"><i class="fa-solid fa-hourglass-half"></i> Night Length</div><div class="value" id="nightLength">--</div></div>
+</div>
+</article>
+
+<article class="x-scroll" id="hourly-forecast">
+</article>
+
+<article id="daily-forecast" role="list" style="--space: 0.75rem;">
+</article>
+
+<article style="aspect-ratio: 1/1;">
+<h2><span>Rain Chance</span></h2>
+<div class="css-gauge is-loading" id="precipCSSGauge" style="--percentage: 0;">
+<div class="gauge-inner">
+<i class="fa-solid fa-cloud-rain"></i>
+<p class="gauge-value" id="rainChance">--%</p>
+</div>
+</div>
+</article>
+
+<article style="aspect-ratio: 1/1;">
+<h2><span>Humidity</span></h2>
+<div class="css-gauge is-loading" id="humidCSSGauge" style="--percentage: 0;">
+<div class="gauge-inner">
+<i class="fa-solid fa-droplet"></i>
+<p class="gauge-value" id="humidity">--%</p>
+</div>
+</div>
+</article>
+
+<article class="tile" id="art-details">
+<div class="tile-title"><span>Wind Speed</span></div>
+<div class="tile-img"><i class="fa-solid fa-wind"></i></div>
+<div class="tile-data">
+<p id="windSpeed">--</p>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Wind Gusts</span></div>
+<div class="tile-img"><i class="fa-solid fa-gauge-high"></i></div>
+<div class="tile-data">
+<p id="windGust">--</p>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Wind Direction</span></div>
+<div class="tile-img"><i class="fa-solid fa-compass"></i></div>
+<div class="tile-data">
+<p id="windCompass">--</p>
+<p id="windDirection">--</p>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Cloud Cover</span></div>
+<div class="tile-img"><i class="fa-solid fa-cloud"></i></div>
+<div class="tile-data"><p id="clouds">--</p></div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Dew Point</span></div>
+<div class="tile-img"><i class="fa-solid fa-droplet"></i></div>
+<div class="tile-data">
+<p id="dewPoint">--</p>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Pressure</span></div>
+<div class="tile-img"><i class="fa-solid fa-gauge"></i></div>
+<div class="tile-data">
+<p id="pressure">--</p>
+</div>
+</article>
+
+<article>
+<h2>Visibility</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label">Distance</div><div class="value" id="visibility">--</div></div>
+<div class="data-row"><div class="label">Level</div><div class="value" id="visibility-level">--</div></div>
+<p id="visibility-summary" class="summary-text">--</p>
+</div>
+</article>
+
+<article>
+<h2>UV Index</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label">Index</div><div class="value" id="uvIndex">--</div></div>
+<div class="data-row"><div class="label">Level</div><div class="value" id="uv-level">--</div></div>
+<div class="range">
+<span class="range-label">0</span>
+<div class="meter"><span class="meter__fill" id="uvMeterFill"></span></div>
+<span class="range-label">11+</span>
+</div>
+<p id="uv-summary" class="summary-text">--</p>
+</div>
+</article>
+
+<article>
+<h2>Air Quality</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label">AQI</div><div class="value" id="air-quality-level">--</div></div>
+<div class="range">
+<span class="range-label">1</span>
+<div class="meter"><span class="meter__fill" id="air-quality-meter-fill"></span></div>
+<span class="range-label">5</span>
+</div>
+<p id="air-quality-summary" class="summary-text">--</p>
+</div>
+</article>
+
+<article>
+<h2>Pollution</h2>
+<div class="art-inner">
+<div class="data-row"><div class="label">Level</div><div class="value" id="pollution-level">--</div></div>
+<div class="range">
+<span class="range-label">Good</span>
+<div class="meter"><span class="meter__fill" id="pollution-meter-fill"></span></div>
+<span class="range-label">Poor</span>
+</div>
+<p id="pollution-summary" class="summary-text">--</p>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>CO</span></div>
+<div class="tile-img"><i class="fa-solid fa-smog"></i></div>
+<div class="tile-data">
+<p id="co_level">--</p>
+<div id="co-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>Ozone O&#x2083;</span></div>
+<div class="tile-img"><i class="fa-solid fa-shield-halved"></i></div>
+<div class="tile-data">
+<p id="ozone_level">--</p>
+<div id="ozone-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>SO&#x2082;</span></div>
+<div class="tile-img"><i class="fa-solid fa-flask"></i></div>
+<div class="tile-data">
+<p id="so2-level">--</p>
+<div id="so2-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>NH&#x2083;</span></div>
+<div class="tile-img"><i class="fa-solid fa-vial"></i></div>
+<div class="tile-data">
+<p id="nh3-level">--</p>
+<div id="nh3-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>PM2.5</span></div>
+<div class="tile-img"><i class="fa-solid fa-chart-area"></i></div>
+<div class="tile-data">
+<p id="pm25-level">--</p>
+<div id="pm25-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+<article class="tile">
+<div class="tile-title"><span>PM10</span></div>
+<div class="tile-img"><i class="fa-solid fa-wind"></i></div>
+<div class="tile-data">
+<p id="pm10-level">--</p>
+<div id="pm10-meter" class="meter" data-state="neutral" style="margin-top:1rem;"><span class="meter__fill"></span></div>
+</div>
+</article>
+
+</main>
+
+<footer class="footer">
+<div class="footer-buttons">
+<button class="footer-button" id="searchClear"><i class="fa fa-search-minus" aria-hidden="true"></i></button>
+<button class="footer-button" id="locationBtn"><i class="fa fa-location-arrow" aria-hidden="true"></i></button>
+<button class="footer-button" id="refreshBtn"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+<button class="footer-button" id="unitToggle"><i class="fa fa-thermometer-empty" aria-hidden="true"></i></button>
+<button class="footer-button" id="scrollDown"><i class="fa fa-arrow-down" aria-hidden="true"></i></button>
+</div>
+</footer>
+
+</section>
+
+<script type="importmap">
+{
+"imports": {
+"three": "https://cdn.jsdelivr.net/npm/three@0.169.0/build/three.module.js",
+"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.169.0/examples/jsm/"
+}
+}
+</script>
+<script type="module">
+import * as THREE_MODULE from 'three';
+import { Water } from 'three/addons/objects/Water.js';
+window.THREE = { ...THREE_MODULE, Water };
+</script>
+
+<script  src="./script.js"></script>
+
+
+</body>
+</html>
